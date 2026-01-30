@@ -8,7 +8,7 @@ time_msgs=["what's the time","what time is it","current time","time"]
 open_msgs=["youtube","facebook","google","linkedin"]
 news_msgs=["tell me news","simple news","today news"]
 def get_news():
-    url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=695e07af402f4b119f0703e9b19f4683"
+    url = ""
     response = requests.get(url)
     data = response.json()
     articles = data['articles']
