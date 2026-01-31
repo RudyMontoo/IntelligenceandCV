@@ -7,13 +7,57 @@ date_msgs=["what's the date","what is the date","current date","date"]
 time_msgs=["what's the time","what time is it","current time","time"]
 open_msgs=["youtube","facebook","google","linkedin"]
 news_msgs=["tell me news","simple news","today news"]
+loc_msgs=["where is","where's","location","tell my currrent location"]
+weather_msgs=["weather","tell me weather","what's the weather"]
 def get_news():
-    url = ""
+    url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=695e07af402f4b119f0703e9b19f4683%22"
     response = requests.get(url)
     data = response.json()
     articles = data['articles']
     for i in range(len(articles)):
         print(articles[i]['title'])
+def get_location():
+    ip_address = requests.get("https://api.ipify.org").text
+    data = requests.get(f"http://ip-api.com/json/{ip_address}").json()
+    return {
+        "city": data.get("city"),
+        "region": data.get("regionName"),
+        "country": data.get("country"),
+        "lat": data.get("lat"),
+        "lon": data.get("lon")
+    }
+
+
+# def get_weather():
+#     city = get_location()
+#     # url = "https://api.openweathermap.org/data/3.0/onecall/timemachine?lat=39.099724&lon=-94.578331&dt=1643803200&appid=a3759b142167ce77c3ce32825dae8efe"
+#     url=f"https://api.weatherapi.com/v1/current.json?key=4aa3d8aed6774cc3945160505263001&q={city}&aqi=yes"
+#     response = requests.get(url)
+#     data = response.json()
+#     print(
+#         "City ->", data["location"]["name"],
+#         "\nCountry ->", data["location"]["country"],
+#         "\nTemperature (°C) ->", data["current"]["temp_c"],
+#         "\nHumidity ->", data["current"]["humidity"],
+#         "\nCondition ->", data["current"]["condition"]["text"]
+#     )
+
+def get_weather():
+    loc = get_location()
+    url = (
+        "https://api.weatherapi.com/v1/current.json"
+        f"?key=4aa3d8aed6774cc3945160505263001&q={loc['lat']},{loc['lon']}&aqi=yes"
+    )
+    data = requests.get(url).json()
+
+    print(
+        "Location ->", loc["city"], ",", loc["region"],
+        "\nTemperature (°C) ->", data["current"]["temp_c"],
+        "\nHumidity ->", data["current"]["humidity"],
+        "\nCondition ->", data["current"]["condition"]["text"]
+    )
+
+
 
 chat=True
 while(chat):
@@ -37,6 +81,16 @@ while(chat):
         print(result)
     elif user_msg in news_msgs:
         get_news()
+    elif user_msg in loc_msgs:
+        loc = get_location()
+        print(
+            "City ->", loc["city"],
+            "\nRegion ->", loc["region"],
+            "\nCountry ->", loc["country"]
+        )
+
+    elif user_msg in weather_msgs:
+        get_weather()
     else:
         print("I don't understand you")
 
