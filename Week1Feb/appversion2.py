@@ -1,6 +1,32 @@
 from datetime import datetime
 import webbrowser
 import requests
+import speech_recognition as sr
+import pyttsx3
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 170)
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    rec= sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        rec.pause_threshold = 1
+        audio = rec.listen(source)
+    try:
+        print("Recognizing...")
+        query = rec.recognize_google(audio, language='en-in')
+        print(f"User said: {query}\n")
+
+        return query.lower()
+    except Exception as e:
+        print("Cant understand")
+        return "none"
+
 #always use to convert input lower case
 greet_msgs=["hi","hello","hey","hi there","hello there"]
 date_msgs=["what's the date","what is the date","current date","date"]
@@ -61,9 +87,10 @@ def get_weather():
 
 chat=True
 while(chat):
-    user_msg = input("Enter your message:").lower()
+    # user_msg = input("Enter your message:").lower()
+    user_msg = listen()
     if(user_msg in greet_msgs):
-        print("Hello, How can I help you?")
+        speak("Hello, How can I help you?")
     elif user_msg=="bye":
         print("Bye, Have a nice day!")
         chat=False
@@ -94,3 +121,8 @@ while(chat):
     else:
         print("I don't understand you")
 
+
+
+# TO RUN IN THIS SYSTEM (LINUX)
+# YOU HAVE TO USE THIS COMMAND IN TERMINAL
+# python appversion2.py 2>/dev/null
