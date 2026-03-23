@@ -1,0 +1,154 @@
+If-else based Chatbot
+NLP
+Text processing
+Vectorizer
+Machine Learning -> Logistic Regression
+Save and Load model
+Streamlit based web app
+
+Word Embeddings
+- Word2Vec
+- GlovE
+
+
+What is a Word Embedding ?
+- Dense vector representation of a word that captures meaning
+
+TF-IDF treats words as independent tokens
+TF-IDF does not understand:
+car = automobile
+mobile = electronics
+happy = joyful
+
+So we need a way to represent words based on meaning, not just count
+
+Technique for dense numerical vectors:
+Word2Vec
+- one of the tehcnique in NLP used to represent words as dense numerical vector
+- developed by Google in 2013
+- it allows machine to understand the semantic relationship between words by positioning similar words closer together in a high-dimensional vector space
+
+
+Core idea behind Word2Vec
+- Words that appear in similar context have similar meanings
+- This is called: Distributional Hypothesis
+
+Core Architecture:
+- CBOW - Continuous Bag of Words
+  - Model that predicts a target word based on its surronding context words. It is fast for frequent words.
+- Skip-gram
+  - using a single word to precit the surronding context words. It is fast for infrequent words
+
+
+CBOW: Predict target word from surronding context
+Input: I am learning _______ intelligence
+Prediction - artificial
+
+Skip-Gram: Predict surronding words from a target word
+Input: artificial
+Prediction: intelligence, human, machine
+
+
+Key differences b/w Sparse Matrix and Dense Matrix
+1. Data representation
+Sparse - Mostly zero values
+Dense - Most values are meaningful, non-zero values
+
+2. Memory efficiency
+Sparse - Highly memory-efficient for large datasets
+Dense - Memory intnsive for large datasets
+
+============================
+
+GloVe
+- Global Vectors for Word Representation
+- developed by Stanford university
+
+Unlike Word2Vec (predictive model), GloVe is a : Count-based + Matrix factorization
+It combines:
+1. Statistical word co-occurrence
+2. Matrix factorization
+3. Linear Algebra
+
+Word2Vec learns embeddings by predicting context
+But is uses:
+- local context window
+- doesn't directly use global corpus statistics
+
+Core Idea behine GloVe:
+1. It build word-word co-occurrence matrix
+
+======================
+
+Window Based Model
+
+Glove - Window Based Model (Context Usage)
+
+After GloVe we have:
+word -> vector
+But NLP tasks won't be for one single word.
+They are about word + surronding words...
+So we need to use a window
+
+Window = fixed number of words around a target word
+
+Limitation of Window Based Model:
+- Fixed window size
+- Capture limited context
+
+Example:
+I am from France and I speak fluent ______
+
+- That's why we need Memory
+= So we need RNN 
+
+
+RNN - Recurrent Neural Network
+Pre-requisite:
+1. NLP
+2. ANN
+
+Ex: I did not like this movie
+
+Step-1: Initialize Memory
+memory = empty
+This memory is called hidden state
+
+Step-2: Read first word
+Input - "I"
+Updates memory
+memory = understanding of "I"
+
+Step-3: Read next word
+Input - "did"
+Now RNN has:
+- previous memory = "I"
+- current word = "did"
+
+memory = understanding of "I did"
+
+Step-4: Read next word:
+Input - "not"
+previous memory = "I did"
+current word = "not"
+new memory = "I did not"
+
+
+Step-4: Read next word:
+Input - "like"
+previous memory = "I did not"
+current word = "like" - positive sentiment
+new memory = "I did not like"
+
+But memory contains "not"
+memory = negative sentiment
+
+Algorithm of RNN:
+1. Start with empty memory
+2. For each word in the sentence:
+- Read the word
+- Combine it with previous Memory
+- update the memory
+3. After last word:
+- Use memory to make prediction
+
