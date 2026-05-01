@@ -200,8 +200,8 @@ while True:
                 x1, y1 = int(left_eye.x * w), int(left_eye.y * h)
                 x2, y2 = int(right_eye.x * w), int(right_eye.y * h)
 
-                glasses_width = int(np.hypot(x2 - x1, y2 - y1) * 1.8)
-                glasses_height = int(glasses_width * 0.5)
+                glasses_width = int(np.hypot(x2 - x1, y2 - y1) * 1.8)-20
+                glasses_height = int(glasses_width * 0.5)-20
 
                 if glasses_width > 0 and glasses_height > 0:
                     resized_sg = cv2.resize(sunglasses, (glasses_width, glasses_height))
